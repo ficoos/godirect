@@ -1,3 +1,5 @@
+// Package to allow direct IO in Go.
+// Currently only works on Linux
 package godirect
 
 type File interface {
