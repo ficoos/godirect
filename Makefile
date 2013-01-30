@@ -8,9 +8,9 @@ GO_GET := go get
 
 GO_DEPS := launchpad.net/gocheck
 
-.PHONY: godirect get_deps update_deps
+.PHONY: test get_deps update_deps
 
-all: get_deps bin/godirect
+all: test
 
 get_deps:
 	GOPATH="$(GOPATH)" ${GO_GET} ${GO_DEPS}
@@ -18,12 +18,9 @@ get_deps:
 update_deps:
 	GOPATH="$(GOPATH)" ${GO_GET} -u ${GO_DEPS}
 
-
-bin/godirect: godirect
-	GOPATH="$(GOPATH)" ${GO_INSTALL} $<
-	GOPATH="$(GOPATH)" ${GO_TEST} $<
+test:
+	GOPATH="$(GOPATH)" ${GO_TEST}
 
 clean:
-	GOPATH="$(GOPATH)" ${GO_CLEAN} godirect
-	rm -f bin/*
+	GOPATH="$(GOPATH)" ${GO_CLEAN}
 
