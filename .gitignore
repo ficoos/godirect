@@ -1,0 +1,5 @@
+pkg/
+*.swp
+*~
+src/launchpad.net
+*.test
