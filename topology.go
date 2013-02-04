@@ -67,8 +67,8 @@ func getBlockDeviceTopology(file File) (DeviceTopology, error) {
 	return res, nil
 }
 
-// Get topology data using file system APIs. In case of an error getting any of
-// the topology properties the field will be set to 0
+// Get topology data using file system APIs. In case there is an error getting
+// any of the topology properties the field will be set to 0
 func getFileSystemTopology(file File) DeviceTopology {
 	xfer := getMinimumTransferSize(file)
 	align := getRecommendedTransferAlignment(file)

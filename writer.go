@@ -21,7 +21,7 @@ type Writer struct {
 }
 
 // NewWriter returns a new Writer with an internal buffer that is suitable for
-// for direct IO operations.
+// direct IO operations.
 func NewWriter(file File) (*Writer, error) {
 	var align, xfer int64 = 4096, 4096
 	topo := DetectDeviceTopology(file)
@@ -100,7 +100,7 @@ func (w *Writer) Flush() error {
 	return err
 }
 
-// Frees the internal buffers but does not close the underlying file.
+// Frees all internal buffers but does not close the underlying file.
 func (w *Writer) Close() {
 	w.abuff.Close()
 }

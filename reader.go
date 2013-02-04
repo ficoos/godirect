@@ -8,7 +8,7 @@ import (
 // A high level wrapper that allows reading direct IO in arbitrary locations
 // and chunk sizes. This implementation prefers simplicity over performance.
 // It is meant to be easily integrated with other IO operations in Go that
-// might not expect the constraints that direct IO might demand.
+// might not expect the constraints that direct IO demands.
 type Reader struct {
 	file  File  // managed file
 	xfer  int64 // recommended transfer size
@@ -16,7 +16,7 @@ type Reader struct {
 }
 
 // Creates a new Reader for that specified file
-// It is assume that the file has been opened with the O_DIRECT flag
+// It is assumed that the file has been opened with the O_DIRECT flag
 func NewReader(file File) *Reader {
 	var align, xfer int64 = 4096, 4096
 	topo := DetectDeviceTopology(file)
