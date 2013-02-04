@@ -5,7 +5,6 @@ It exposes high and low level interfaces.
 
 The library currently only has high level interfaces for reading.
 
-This is Alpha grade software
-
 # TODO
-* Support writing
+* More tests
+* Support other OSs
