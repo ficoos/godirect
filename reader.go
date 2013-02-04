@@ -18,14 +18,15 @@ type Reader struct {
 // Creates a new Reader for that specified file
 // It is assume that the file has been opened with the O_DIRECT flag
 func NewReader(file File) *Reader {
-	xfer := GetMinimumTransferSize(file)
-	if xfer == -1 {
-		xfer = 4096
+	var align, xfer int64 = 4096, 4096
+	topo := GetTopologyData(file)
+	if topo.AlignmentOffset > 0 {
+		align = int64(topo.AlignmentOffset)
 	}
-
-	align := GetRecommendedTransferAlignment(file)
-	if align == -1 {
-		align = 4096
+	if topo.OptimalIOSize > 0 {
+		xfer = int64(topo.OptimalIOSize)
+	} else if topo.MinimumIOSize > 0 {
+		xfer = int64(topo.MinimumIOSize)
 	}
 
 	return &Reader{file, xfer, align}

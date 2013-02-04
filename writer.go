@@ -22,16 +22,17 @@ type Writer struct {
 
 // NewWriter returns a new Writer whose buffer has the approriate size and
 // alignment for direct io.
-
 func NewWriter(file File) (*Writer, error) {
-	xfer := GetMinimumTransferSize(file)
-	if xfer == -1 {
-		xfer = 4096
+	var align, xfer int64 = 4096, 4096
+	topo := GetTopologyData(file)
+	if topo.AlignmentOffset > 0 {
+		align = int64(topo.AlignmentOffset)
 	}
-
-	align := GetRecommendedTransferAlignment(file)
-	if align == -1 {
-		align = 4096
+	// TBD: Always use minimal?
+	if topo.OptimalIOSize > 0 {
+		xfer = int64(topo.OptimalIOSize)
+	} else if topo.MinimumIOSize > 0 {
+		xfer = int64(topo.MinimumIOSize)
 	}
 
 	buff, err := NewAlignedBuffer(align, int(xfer))
