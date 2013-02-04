@@ -5,23 +5,23 @@ import (
 	"syscall"
 )
 
-// Writer implements buffering on top of a specially allocated buffer to
-// allow for direct IO writes. If an error occurs writing to a Writer, no more
-// data will be accepted and all subsequent writes will return the error.  The
-// user can for a write by using Flush() but the writer will fill will fill the
-// ramainder of the buffer to a full chunk with '\0'.
+// Writer implements buffering on top of a specially allocated buffer to allow
+// for direct IO writes. If an error occurs writing to a Writer, no more data
+// will be accepted and all subsequent writes will return the error. The user
+// can force a write by using Flush() but the writer will fill the ramainder of
+// the buffer with '\0' before writing.
 type Writer struct {
-	file  File           // managed file
-	xfer  int64          // recommended transfer size
-	align int64          // recommended alignment
+	file  File          // managed file
+	xfer  int64         // recommended transfer size
+	align int64         // recommended alignment
 	abuff AlignedBuffer // internal buffer
-	buff  []byte         // slice to internal buffer
-	pbuff int            // current location in internall buffer
-	err   error          // error that broke this Writer
+	buff  []byte        // slice to internal buffer
+	pbuff int           // current location in internall buffer
+	err   error         // error that broke this Writer
 }
 
-// NewWriter returns a new Writer whose buffer has the approriate size and
-// alignment for direct io.
+// NewWriter returns a new Writer with an internal buffer that is suitable for
+// for direct IO operations.
 func NewWriter(file File) (*Writer, error) {
 	var align, xfer int64 = 4096, 4096
 	topo := DetectDeviceTopology(file)
