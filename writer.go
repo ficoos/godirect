@@ -5,7 +5,7 @@ import (
 	"syscall"
 )
 
-// Writer is a implements buffering on top of a specially allocated buffer to
+// Writer implements buffering on top of a specially allocated buffer to
 // allow for direct IO writes. If an error occurs writing to a Writer, no more
 // data will be accepted and all subsequent writes will return the error.  The
 // user can for a write by using Flush() but the writer will fill will fill the
@@ -14,7 +14,7 @@ type Writer struct {
 	file  File           // managed file
 	xfer  int64          // recommended transfer size
 	align int64          // recommended alignment
-	abuff *AlignedBuffer // internal buffer
+	abuff AlignedBuffer // internal buffer
 	buff  []byte         // slice to internal buffer
 	pbuff int            // current location in internall buffer
 	err   error          // error that broke this Writer
