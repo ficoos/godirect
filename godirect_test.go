@@ -97,8 +97,8 @@ func (s *GoDirectTests) TestSimpleRead(c *C) {
 
 func (s *GoDirectTests) TestDeviceRead(c *C) {
 	fname := "/dev/sda"
-	reg := make([]byte, (2 ^ 10) * 4)
-	direct := make([]byte, (2 ^ 10) * 4)
+	reg := make([]byte, (2^10)*4)
+	direct := make([]byte, (2^10)*4)
 	freg, err := os.OpenFile(fname, os.O_RDONLY, 0666)
 	if err != nil {
 		c.Fatal("Could not open device: ", err)
@@ -106,7 +106,7 @@ func (s *GoDirectTests) TestDeviceRead(c *C) {
 	defer freg.Close()
 
 	fdirect, err := os.OpenFile(fname,
-	                            os.O_RDONLY | syscall.O_DIRECT, 0666)
+		os.O_RDONLY|syscall.O_DIRECT, 0666)
 	if err != nil {
 		c.Fatal("Could not open device for direct IO: ", err)
 	}
@@ -122,7 +122,6 @@ func (s *GoDirectTests) TestDeviceRead(c *C) {
 	if err != nil {
 		c.Fatal("Could not read device using direct IO: ", err)
 	}
-
 
 	if !bytes.Equal(reg, direct) {
 		c.Errorf("Expected '%s' got '%s'", reg, direct)

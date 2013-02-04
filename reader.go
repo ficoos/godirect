@@ -19,7 +19,7 @@ type Reader struct {
 // It is assume that the file has been opened with the O_DIRECT flag
 func NewReader(file File) *Reader {
 	var align, xfer int64 = 4096, 4096
-	topo := GetTopologyData(file)
+	topo := DetectDeviceTopology(file)
 	if topo.AlignmentOffset > 0 {
 		align = int64(topo.AlignmentOffset)
 	}

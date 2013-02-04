@@ -12,7 +12,7 @@ import (
 	"syscall"
 )
 
-type TopologyData struct {
+type DeviceTopology struct {
 	AlignmentOffset    uint64 // Meomory alignment required direct IO
 	MinimumIOSize      uint64 // Minimal IO allowed
 	OptimalIOSize      uint64 // Optimal IO for device
@@ -20,21 +20,21 @@ type TopologyData struct {
 	PhysicalSectorSize uint64 // Physical sector size
 }
 
-// Gets the topology data of a device. In case of an error getting any of the
-// topology properties the field will be set to 0
-func GetTopologyData(file File) TopologyData {
-	topo, err := GetDeviceTopologyData(file)
+// Detects the topology data of a device. In case of an error getting any of
+// the topology properties the field will be set to 0
+func DetectDeviceTopology(file File) DeviceTopology {
+	topo, err := getBlockDeviceTopology(file)
 	if err == nil {
 		return topo
 	}
 
-	return GetFileSystemTopologyData(file)
+	return getFileSystemTopology(file)
 }
 
 // Get topology data using blkid APIs. In case of an error getting any of the
 // topology properties the field will be set to 0
-func GetDeviceTopologyData(file File) (TopologyData, error) {
-	var res TopologyData
+func getBlockDeviceTopology(file File) (DeviceTopology, error) {
+	var res DeviceTopology
 
 	probe := C.blkid_new_probe()
 	if probe == nil {
@@ -69,7 +69,7 @@ func GetDeviceTopologyData(file File) (TopologyData, error) {
 
 // Get topology data using file system APIs. In case of an error getting any of
 // the topology properties the field will be set to 0
-func GetFileSystemTopologyData(file File) TopologyData {
+func getFileSystemTopology(file File) DeviceTopology {
 	xfer := getMinimumTransferSize(file)
 	align := getRecommendedTransferAlignment(file)
 	if xfer < 0 {
@@ -83,7 +83,7 @@ func GetFileSystemTopologyData(file File) TopologyData {
 	ualigne := uint64(align)
 	uxfer := uint64(xfer)
 
-	return TopologyData{ualigne, uxfer, uxfer, uxfer, uxfer}
+	return DeviceTopology{ualigne, uxfer, uxfer, uxfer, uxfer}
 }
 
 func getRecommendedTransferAlignment(file File) int64 {

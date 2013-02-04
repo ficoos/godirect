@@ -24,7 +24,7 @@ type Writer struct {
 // alignment for direct io.
 func NewWriter(file File) (*Writer, error) {
 	var align, xfer int64 = 4096, 4096
-	topo := GetTopologyData(file)
+	topo := DetectDeviceTopology(file)
 	if topo.AlignmentOffset > 0 {
 		align = int64(topo.AlignmentOffset)
 	}
