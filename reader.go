@@ -87,9 +87,3 @@ func (r *Reader) ReadAt(p []byte, off int64) (int, error) {
 	copy(p, slice[offset:offset+bread])
 	return bread, nil
 }
-
-func (r *Reader) ReadByte() (c byte, err error) {
-	buff := make([]byte, 1)
-	_, err = r.Read(buff)
-	return buff[0], err
-}
