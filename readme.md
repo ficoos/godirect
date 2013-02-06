@@ -9,6 +9,10 @@ The library currently only has high level interfaces for reading.
 
 Requires libblkid and it's developent files.
 
+# DOCs
+
+http://godoc.org/github.com/ficoos/godirect
+
 # TODO
 * More tests
 * Support other OSs
